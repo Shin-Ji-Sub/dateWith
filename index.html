@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>business</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    #map {
+      width: 100%;
+      height: 100vh;
+    }
+
+    /* 화살표 아이콘 스타일 */
+    .arrow-marker {
+      color: red;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<!-- Bottom Nav -->
+<nav class="navbar fixed-bottom navbar-light bg-light border-top">
+  <div class="container-fluid d-flex justify-content-around text-center">
+    <a href="index.html" class="text-decoration-none text-dark">
+      <i class="bi bi-geo-alt-fill fs-4"></i>
+      <div style="font-size:12px;">Map</div>
+    </a>
+    <a href="search.html" class="text-decoration-none text-dark">
+      <i class="bi bi-search fs-4"></i>
+      <div style="font-size:12px;">Search</div>
+    </a>
+  </div>
+</nav>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<!-- script -->
+<script src="main.js"></script>
+
+</body>
+</html>
+

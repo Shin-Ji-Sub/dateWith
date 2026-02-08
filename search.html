@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    body {
+      padding-bottom: 70px;
+    }
+    .result-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: calc(100vh - 140px); /* 상단 + 하단 nav 제외 */
+    }
+
+    #result {
+      width: 100%;
+      max-width: 420px;
+      border-radius: 16px;
+    }
+    
+  </style>
+</head>
+<body class="bg-light">
+
+<div class="container py-3">
+  <h5 class="mb-3">주소 검색</h5>
+
+  <div class="input-group mb-3">
+    <input type="text" id="address" class="form-control" placeholder="주소 입력">
+    <button class="btn btn-primary" id="searchBtn">검색</button>
+  </div>
+
+  <div class="result-wrapper d-none" id="resultWrapper">
+    <div id="result" class="card shadow">
+      <div class="card-body text-center">
+        <p class="fw-bold fs-5 mb-2">주소</p>
+        <p id="displayName" class="fs-6"></p>
+        <hr>
+        <!-- 위도 -->
+        <div class="d-flex justify-content-center align-items-center gap-2 mb-2">
+          <strong class="fs-5">위도</strong>
+          <span id="lat" class="fs-4 text-primary fw-bold"></span>
+          <button class="btn btn-outline-secondary btn-sm copy-btn" data-target="lat">
+            <i class="bi bi-clipboard"></i>
+          </button>
+        </div>
+
+        <!-- 경도 -->
+        <div class="d-flex justify-content-center align-items-center gap-2">
+          <strong class="fs-5">경도</strong>
+          <span id="lng" class="fs-4 text-primary fw-bold"></span>
+          <button class="btn btn-outline-secondary btn-sm copy-btn" data-target="lng">
+            <i class="bi bi-clipboard"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom Nav -->
+<nav class="navbar fixed-bottom navbar-light bg-light border-top">
+  <div class="container-fluid d-flex justify-content-around text-center">
+    <a href="index.html" class="text-decoration-none text-dark">
+      <i class="bi bi-geo-alt-fill fs-4"></i>
+      <div style="font-size:12px;">Map</div>
+    </a>
+    <a href="search.html" class="text-decoration-none text-danger">
+      <i class="bi bi-search fs-4"></i>
+      <div style="font-size:12px;">Search</div>
+    </a>
+  </div>
+</nav>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+  // 검색 버튼 클릭
+  function searchAddress() {
+    const addr = $('#address').val().trim();
+    if (!addr) {
+      alert('주소를 입력하세요');
+      return;
+    }
+
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(addr)}`;
+
+    $.getJSON(url, function (data) {
+      if (!data || data.length === 0) {
+        alert('검색 결과가 없습니다');
+        return;
+      }
+
+      const r = data[0];
+
+      $('#displayName').text(r.display_name);
+      $('#lat').text(r.lat);
+      $('#lng').text(r.lon);
+
+      $('#resultWrapper').removeClass('d-none');
+    });
+  }
+
+  // 버튼 클릭
+  $('#searchBtn').on('click', function () {
+    searchAddress();
+  });
+
+  // Enter 키 입력
+  $('#address').on('keydown', function (e) {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // form submit 방지
+      searchAddress();
+    }
+  });
+
+
+  // 복사 버튼 클릭
+  $(document).on('click', '.copy-btn', function () {
+    const targetId = $(this).data('target');
+    const text = $('#' + targetId).text();
+
+    if (!text) {
+      alert('복사할 값이 없습니다');
+      return;
+    }
+
+    // 최신 브라우저
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text)
+        .then(() => showCopied($(this)))
+        .catch(() => fallbackCopy(text, $(this)));
+    } else {
+      fallbackCopy(text, $(this));
+    }
+  });
+
+  // fallback 복사 방식
+  function fallbackCopy(text, btn) {
+    const temp = $('<textarea>');
+    $('body').append(temp);
+    temp.val(text).select();
+    document.execCommand('copy');
+    temp.remove();
+    showCopied(btn);
+  }
+
+  // 복사 완료 피드백
+  function showCopied(btn) {
+    btn.html('<i class="bi bi-check-lg text-success"></i>');
+    setTimeout(() => {
+      btn.html('<i class="bi bi-clipboard"></i>');
+    }, 1200);
+  }
+
+
+  
+</script>
+
+</body>
+</html>
