@@ -274,33 +274,35 @@ function renderPlaces(placeList) {
     5. 카테고리 검색 함수
 ========================== */
 function searchByCategory() {
-  const keyword = document.getElementById('categoryInput').value.trim();
+  const selected = document.getElementById('categorySelect').value;
 
-  if (keyword === '') {
+  // 전체 선택 시
+  if (selected === '') {
     renderPlaces(places);
     return;
   }
 
   const filtered = places.filter(place =>
-    place.category.includes(keyword)
+    place.category === selected
   );
 
   renderPlaces(filtered);
 }
 
+
 /* =========================
     6. 이벤트 연결
 ========================== */
 
-// 검색 버튼 클릭
-document.getElementById('searchBtn').addEventListener('click', searchByCategory);
+// select 변경만으로도 바로 검색되게 (선택)
+document.getElementById('categorySelect').addEventListener('change', searchByCategory);
 
-// Enter 키 검색
-document.getElementById('categoryInput').addEventListener('keydown', function (e) {
-  if (e.key === 'Enter') {
-    searchByCategory();
-  }
-});
+// // Enter 키 검색
+// document.getElementById('categoryInput').addEventListener('keydown', function (e) {
+//   if (e.key === 'Enter') {
+//     searchByCategory();
+//   }
+// });
 
 /* =========================
     7. 최초 로딩 시 전체 표시

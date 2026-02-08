@@ -35,15 +35,17 @@
 <body>
 <div class="container my-3">
   <div class="input-group">
-    <input
-      type="text"
-      id="categoryInput"
-      class="form-control"
-      placeholder="검색 (예: 카페, 해변, 관광지, 식당)"
-    >
-    <button class="btn btn-primary" id="searchBtn">
+    <select id="categorySelect" class="form-select">
+      <option value="">전체</option>
+      <option value="카페">카페</option>
+      <option value="해변">해변</option>
+      <option value="관광지">관광지</option>
+      <option value="식당">식당</option>
+    </select>
+
+    <!-- <button class="btn btn-primary" id="searchBtn">
       검색
-    </button>
+    </button> -->
   </div>
 </div>
 
